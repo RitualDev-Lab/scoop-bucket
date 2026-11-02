@@ -1,0 +1,22 @@
+PackageIdentifier: RitualDevLab.DBShield
+PackageVersion: 0.2.0
+PackageName: DBShield
+Publisher: RitualDev Lab
+License: MIT
+LicenseUrl: https://github.com/RitualDev-Lab/DBShield/blob/main/LICENSE
+ShortDescription: Database Guardrail, Sandboxing Wire Proxy & Virtual Schema RBAC
+Moniker: dbshield
+Tags:
+  - database
+  - postgresql
+  - security
+  - guardrail
+  - mcp
+Installers:
+  - Architecture: x64
+    InstallerType: portable
+    Commands:
+      - dbshield
+PackageLocale: en-US
+ManifestType: singleton
+ManifestVersion: 1.6.0

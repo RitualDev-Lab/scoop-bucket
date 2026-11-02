@@ -1,0 +1,23 @@
+PackageIdentifier: RitualDevLab.AgentShield
+PackageVersion: 0.1.4
+PackageName: AgentShield
+Publisher: RitualDev Lab
+License: MIT
+LicenseUrl: https://github.com/RitualDev-Lab/AgentShield/blob/main/LICENSE
+ShortDescription: Enterprise Zero-Leak Secret Defense & Kernel Sandbox for Autonomous AI Agents
+Moniker: agentshield
+Tags:
+  - ai
+  - agent
+  - sandbox
+  - security
+  - cursor
+Installers:
+  - Architecture: x64
+    InstallerType: portable
+    Commands:
+      - agentshield
+      - ashield
+PackageLocale: en-US
+ManifestType: singleton
+ManifestVersion: 1.6.0
