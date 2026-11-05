@@ -1,0 +1,65 @@
+name: Scoop Bucket Autoupdater Bot
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-bucket:
+    name: Check & Auto-Update Scoop Manifests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Scoop Bucket
+        uses: actions/checkout@v4
+
+      - name: Update AgentShield Manifest
+        id: update-agentshield
+        run: |
+          set -e
+          echo "Checking npm registry for @ritualdev-lab/agentshield..."
+          NPM_INFO=$(curl -fsSL https://registry.npmjs.org/@ritualdev-lab/agentshield/latest)
+          LATEST_VER=$(echo "$NPM_INFO" | jq -r '.version')
+          TARBALL_URL=$(echo "$NPM_INFO" | jq -r '.dist.tarball')
+
+          if [ -z "$LATEST_VER" ] || [ "$LATEST_VER" = "null" ]; then
+            echo "Error: Unable to fetch latest version from npm"
+            exit 1
+          fi
+
+          echo "Latest npm version: $LATEST_VER"
+          echo "Tarball URL: $TARBALL_URL"
+
+          MANIFEST="bucket/agentshield.json"
+          CURRENT_VER=$(jq -r '.version' "$MANIFEST")
+          echo "Current Manifest version: $CURRENT_VER"
+
+          if [ "$LATEST_VER" != "$CURRENT_VER" ]; then
+            echo "New version detected ($CURRENT_VER -> $LATEST_VER)! Computing sha256..."
+            SHA256=$(curl -fsSL "$TARBALL_URL" | sha256sum | awk '{print $1}')
+            echo "New SHA-256: $SHA256"
+
+            jq --arg v "$LATEST_VER" \
+               --arg h "sha256:$SHA256" \
+               --arg url "$TARBALL_URL" \
+               '.version = $v | .url = $url | .hash = $h' "$MANIFEST" > tmp.json && mv tmp.json "$MANIFEST"
+
+            echo "updated=true" >> $GITHUB_OUTPUT
+            echo "version=$LATEST_VER" >> $GITHUB_OUTPUT
+          else
+            echo "Manifest is already up to date at version $CURRENT_VER."
+            echo "updated=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit & Push Update
+        if: steps.update-agentshield.outputs.updated == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add bucket/agentshield.json
+          git commit -m "chore(autoupdate): bump agentshield to v${{ steps.update-agentshield.outputs.version }}"
+          git push origin main
