@@ -11,11 +11,20 @@ scoop bucket add ritual https://github.com/RitualDev-Lab/scoop-bucket
 
 ### 2. Install Tools:
 ```powershell
+# Enterprise AI DLP & Secret Firewall CLI
+scoop install promptshield
+
+# Safety-first Database Guardrail, Sandboxing Wire Proxy & Virtual Schema RBAC
+scoop install dbshield
+
+# Intelligent Relational Mock DB & Synthetic Test Data Engine
+scoop install mockforge
+
+# In-Memory Contract, Lease & NDA Scanner
+scoop install fineprint
+
 # AI Agent Runtime Defense & Kernel Sandbox (Windows AppContainer)
 scoop install agentshield
-
-# Database Guardrail, Sandboxing Wire Proxy & PII Masking
-scoop install dbshield
 
 # Context Window Optimizer & Tool Router
 scoop install skillprism
@@ -24,10 +33,15 @@ scoop install skillprism
 scoop install web-sec-auditor
 ```
 
+### Install All Suite Tools:
+```powershell
+scoop install promptshield dbshield mockforge fineprint agentshield skillprism web-sec-auditor
+```
+
 ### 3. Update Tools:
 ```powershell
 scoop update
-scoop update agentshield dbshield
+scoop update *
 ```
 
 ## 📄 License

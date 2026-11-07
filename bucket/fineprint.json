@@ -1,0 +1,20 @@
+{
+  "version": "0.1.0",
+  "description": "Enterprise In-Memory Contract, Lease & NDA Scanner running with Gemini 1.5 Flash",
+  "homepage": "https://ritualdev.in/fineprint",
+  "license": "Proprietary",
+  "suggest": {
+    "nodejs": "nodejs-lts"
+  },
+  "url": "https://github.com/RitualDev-Lab/FinePrintAI/releases/download/v0.1.0/fineprint-v0.1.0.zip",
+  "hash": "sha256:88c82157353e4e216d3eb36f128d8f63ed9d7b0885ceb86b9656b2f653232f42",
+  "bin": [
+    ["bin/fineprint.js", "fineprint"]
+  ],
+  "checkver": {
+    "github": "https://github.com/RitualDev-Lab/FinePrintAI"
+  },
+  "autoupdate": {
+    "url": "https://github.com/RitualDev-Lab/FinePrintAI/releases/download/v$version/fineprint-v$version.zip"
+  }
+}
