@@ -1,0 +1,18 @@
+# Maintainer: RitualDev Lab <security@ritualdev.in>
+pkgname=agentshield-bin
+pkgver=0.2.1
+pkgrel=1
+pkgdesc="Enterprise Zero-Leak Secret Defense & Kernel Sandbox for Autonomous AI Coding Agents"
+arch=('x86_64' 'aarch64')
+url="https://ritualdev.in/agentshield"
+license=('MIT')
+depends=('nodejs>=20.0.0')
+provides=('agentshield' 'ashield')
+conflicts=('agentshield')
+source=("https://registry.npmjs.org/@ritualdev-lab/agentshield/-/agentshield-${pkgver}.tgz")
+sha256sums=('ca24514b43de1133987144cbd85327834af4b725f9ce40abee27028db48f7b34')
+
+package() {
+  npm install -g --prefix "${pkgdir}/usr" "${srcdir}/agentshield-${pkgver}.tgz"
+  find "${pkgdir}/usr" -type d -exec chmod 755 {} +
+}

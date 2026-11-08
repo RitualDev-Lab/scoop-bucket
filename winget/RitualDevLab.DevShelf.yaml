@@ -1,0 +1,23 @@
+PackageIdentifier: RitualDevLab.DevShelf
+PackageVersion: 1.1.2
+PackageName: DevShelf
+Publisher: RitualDev Lab
+License: MIT
+LicenseUrl: https://github.com/RitualDev-Lab/DevShelf/blob/main/LICENSE
+ShortDescription: Terminal Search Engine & Directory for 575+ Verified AI Developer Tools & MCP Servers
+Moniker: devshelf
+Tags:
+  - developer-tools
+  - mcp-server
+  - cli
+  - search
+  - ai-agents
+Installers:
+  - Architecture: x64
+    InstallerType: portable
+    Commands:
+      - devshelf
+      - ds
+PackageLocale: en-US
+ManifestType: singleton
+ManifestVersion: 1.6.0

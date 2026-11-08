@@ -1,0 +1,18 @@
+# Maintainer: RitualDev Lab <security@ritualdev.in>
+pkgname=dbshield-bin
+pkgver=0.2.1
+pkgrel=1
+pkgdesc="Deterministic Wire-Level AI Database Sandbox Proxy with Proof-of-Intent & Two-Phase Verification"
+arch=('x86_64' 'aarch64')
+url="https://ritualdev.in/dbshield"
+license=('Apache-2.0')
+depends=('nodejs>=20.0.0')
+provides=('dbshield')
+conflicts=('dbshield')
+source=("https://registry.npmjs.org/@ritualdev-lab/dbshield/-/dbshield-${pkgver}.tgz")
+sha256sums=('44d18fa8d394e09f583f7be52b610c149eb9a6aa8772aebf90b9b7348984950e')
+
+package() {
+  npm install -g --prefix "${pkgdir}/usr" "${srcdir}/dbshield-${pkgver}.tgz"
+  find "${pkgdir}/usr" -type d -exec chmod 755 {} +
+}

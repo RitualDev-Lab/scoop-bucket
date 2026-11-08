@@ -1,0 +1,22 @@
+PackageIdentifier: RitualDevLab.PromptShield
+PackageVersion: 0.1.2
+PackageName: PromptShield
+Publisher: RitualDev Lab
+License: Proprietary
+LicenseUrl: https://github.com/RitualDev-Lab/PromptShield/blob/main/LICENSE
+ShortDescription: Enterprise AI Data Loss Prevention (DLP) & Prompt Firewall CLI
+Moniker: promptshield
+Tags:
+  - ai-security
+  - dlp
+  - prompt-injection
+  - red-teaming
+  - privacy
+Installers:
+  - Architecture: x64
+    InstallerType: portable
+    Commands:
+      - promptshield
+PackageLocale: en-US
+ManifestType: singleton
+ManifestVersion: 1.6.0
