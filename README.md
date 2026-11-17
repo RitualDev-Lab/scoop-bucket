@@ -46,3 +46,12 @@ scoop update *
 
 ## 📄 License
 MIT © [RitualDev Lab](https://github.com/RitualDev-Lab)
+
+---
+
+## 🛡️ Community & Governance
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [Security Policy](SECURITY.md)
+- [Accessibility Statement](ACCESSIBILITY.md)
+- [License](LICENSE)
