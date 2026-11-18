@@ -7,7 +7,7 @@
     "nodejs": "nodejs-lts"
   },
   "url": "https://registry.npmjs.org/@ritualdev-lab/fineprint/-/fineprint-0.1.3.tgz",
-  "hash": "e0532a800a185eb04e025f97cd42788737caf646ed826cfea93749f8b544fd91",
+  "hash": "sha256:e0532a800a185eb04e025f97cd42788737caf646ed826cfea93749f8b544fd91",
   "extract_dir": "package",
   "bin": [
     ["bin/fineprint.js", "fineprint"]
