@@ -1,12 +1,12 @@
 {
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "The Universal Polyglot CLI Package & Dependency Orchestrator",
   "homepage": "https://poly.ritualdev.in",
   "license": "MIT",
   "architecture": {
     "64bit": {
-      "url": "https://github.com/RitualDev-Lab/poly/releases/download/v0.5.1/poly-windows-x64.zip",
-      "hash": "sha256:f3f651aff4b24d24a3a40fe87cfb04cc7e77b1220e3eb3ea67cac2bcd3750675"
+      "url": "https://github.com/RitualDev-Lab/poly/releases/download/v0.6.0/poly-windows-x64.zip",
+      "hash": "sha256:4b225fb330abde4821b381e82e5cc239d14478c47b84e410b572c928bfe976fe"
     }
   },
   "bin": "poly.exe",
