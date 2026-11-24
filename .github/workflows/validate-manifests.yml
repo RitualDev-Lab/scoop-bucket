@@ -25,8 +25,33 @@ jobs:
           import glob, hashlib, json, re, sys, urllib.request
 
           EMPTY_SHA256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-          REQUIRED_KEYS = ("version", "description", "homepage", "license", "url", "hash")
+          BASE_KEYS = ("version", "description", "homepage", "license")
           errors = []
+
+          def verify_target(path, ver, url, raw_hash, label=""):
+              raw_hash = str(raw_hash or "").strip()
+              expected = raw_hash.removeprefix("sha256:").lower()
+              if not url:
+                  errors.append(f"{path}{label}: missing url")
+                  return
+              if not re.fullmatch(r"[0-9a-f]{64}", expected):
+                  errors.append(f"{path}{label}: invalid SHA-256 hash '{raw_hash}'")
+                  return
+              if expected == EMPTY_SHA256:
+                  errors.append(f"{path}{label}: placeholder empty-file SHA-256 detected")
+                  return
+
+              req = urllib.request.Request(url, headers={"User-Agent": "RitualDev-Scoop-CI/1.0"})
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as resp:
+                      data = resp.read()
+                  actual = hashlib.sha256(data).hexdigest()
+                  if actual != expected:
+                      errors.append(f"{path}{label}: SHA-256 mismatch for {url}\n  expected: {expected}\n  actual:   {actual}")
+                  else:
+                      print(f"OK {path}{label} v{ver} ({len(data)} bytes) sha256={actual[:16]}...")
+              except Exception as exc:
+                  errors.append(f"{path}{label}: failed fetching {url}: {exc}")
 
           for path in sorted(glob.glob("bucket/*.json")):
               try:
@@ -35,32 +60,22 @@ jobs:
                   errors.append(f"{path}: invalid JSON: {exc}")
                   continue
 
-              missing = [k for k in REQUIRED_KEYS if not manifest.get(k)]
+              missing = [k for k in BASE_KEYS if not manifest.get(k)]
               if missing:
                   errors.append(f"{path}: missing required keys: {missing}")
                   continue
 
-              url = manifest["url"]
-              raw_hash = str(manifest["hash"]).strip()
-              expected = raw_hash.removeprefix("sha256:").lower()
-              if not re.fullmatch(r"[0-9a-f]{64}", expected):
-                  errors.append(f"{path}: invalid SHA-256 hash '{raw_hash}'")
-                  continue
-              if expected == EMPTY_SHA256:
-                  errors.append(f"{path}: placeholder empty-file SHA-256 detected")
-                  continue
-
-              req = urllib.request.Request(url, headers={"User-Agent": "RitualDev-Scoop-CI/1.0"})
-              try:
-                  with urllib.request.urlopen(req, timeout=30) as resp:
-                      data = resp.read()
-                  actual = hashlib.sha256(data).hexdigest()
-                  if actual != expected:
-                      errors.append(f"{path}: SHA-256 mismatch for {url}\n  expected: {expected}\n  actual:   {actual}")
-                  else:
-                      print(f"OK {path} v{manifest['version']} ({len(data)} bytes) sha256={actual[:16]}...")
-              except Exception as exc:
-                  errors.append(f"{path}: failed fetching {url}: {exc}")
+              arch_map = manifest.get("architecture")
+              if isinstance(arch_map, dict) and arch_map:
+                  for arch_name, arch_cfg in arch_map.items():
+                      if not isinstance(arch_cfg, dict) or not arch_cfg.get("url") or not arch_cfg.get("hash"):
+                          errors.append(f"{path} [{arch_name}]: missing 'url' or 'hash'")
+                          continue
+                      verify_target(path, manifest["version"], arch_cfg["url"], arch_cfg["hash"], f" [{arch_name}]")
+              elif manifest.get("url") and manifest.get("hash"):
+                  verify_target(path, manifest["version"], manifest["url"], manifest["hash"])
+              else:
+                  errors.append(f"{path}: missing required keys: ['url', 'hash'] (or 'architecture.<arch>.url/hash')")
 
           if errors:
               print("\nFAILURES:\n" + "\n".join(errors), file=sys.stderr)
